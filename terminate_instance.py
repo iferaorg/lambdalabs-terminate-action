@@ -53,7 +53,7 @@ def handle_response(response):
 
 def wait_for_terminate(instance_id, lambda_token):
     """Wait for the instance to terminate."""
-    if not os.getenv("WAIT_FOR_TERMINATE", "false").lower() == "false":
+    if not os.getenv("WAIT_FOR_TERMINATE", "false").lower() == "true":
         return
 
     timeout = int(os.getenv("TERMINATE_TIMEOUT", "600"))
