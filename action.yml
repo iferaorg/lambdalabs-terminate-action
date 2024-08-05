@@ -8,6 +8,14 @@ inputs:
   lambda_token:
     description: "The LambdaLabs API token"
     required: true
+  wait_for_termination:
+    description: "Whether to wait for the instance to terminate"
+    required: false
+    default: "false"
+  termination_timeout:
+    description: "The timeout in seconds to wait for the instance to terminate"
+    required: false
+    default: "600"
 runs:
   using: "composite"
   steps:
@@ -34,6 +42,8 @@ runs:
       env:
         INSTANCE_ID: ${{ inputs.instance_id }}
         LAMBDA_TOKEN: ${{ inputs.lambda_token }}
+        WAIT_FOR_TERMINATION: ${{ inputs.wait_for_termination }}
+        TERMINATION_TIMEOUT: ${{ inputs.termination_timeout }}
 
     - name: Clean up
       run: rm -f .tmp-ifera-lambdalabs-launch-instance-action-requirements.txt

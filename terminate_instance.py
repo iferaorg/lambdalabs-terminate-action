@@ -53,10 +53,10 @@ def handle_response(response):
 
 def wait_for_terminate(instance_id, lambda_token):
     """Wait for the instance to terminate."""
-    if not os.getenv("WAIT_FOR_TERMINATE", "false").lower() == "true":
+    if not os.getenv("WAIT_FOR_TERMINATION", "false").lower() == "true":
         return
 
-    timeout = int(os.getenv("TERMINATE_TIMEOUT", "600"))
+    timeout = int(os.getenv("TERMINATION_TIMEOUT", "600"))
     start_time = time.time()
     url = f"https://cloud.lambdalabs.com/api/v1/instances/{instance_id}"
     headers = {"Authorization": f"Bearer {lambda_token}"}
