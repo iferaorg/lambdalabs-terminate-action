@@ -5,6 +5,9 @@ inputs:
   instance_id:
     description: "The ID of the instance to terminate"
     required: true
+  lambda_token:
+    description: "The LambdaLabs API token"
+    required: true
 runs:
   using: "composite"
   steps:
