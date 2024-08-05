@@ -50,22 +50,6 @@ def handle_response(response):
         )
         sys.exit(1)
 
-    # Get data/instance_ids from response
-    data = response.json().get("data", {})
-    instance_id = data.get("instance_ids", [])[0]
-
-    # Get the path to the GITHUB_OUTPUT environment file
-    output_file_path = os.getenv("GITHUB_OUTPUT")
-
-    # Write the output to the GITHUB_OUTPUT environment file
-    if output_file_path is not None:
-        with open(output_file_path, "a", encoding="utf-8") as file:
-            file.write(f"instance_id={instance_id}\n")
-    else:
-        raise ValueError("GITHUB_OUTPUT environment variable is not set.")
-
-    return instance_id
-
 
 def wait_for_terminate(instance_id, lambda_token):
     """Wait for the instance to terminate."""
@@ -101,9 +85,8 @@ def main():
     """Launch a Lambda Labs cloud instance from environment settings."""
     instance_params, lambda_token = get_and_validate_env_vars()
     response = terminate_instance(instance_params, lambda_token)
-    instance_id = handle_response(response)
-    if instance_id:
-        wait_for_terminate(instance_id, lambda_token)
+    handle_response(response)
+    wait_for_terminate(instance_params["instance_ids"][0], lambda_token)
 
 
 if __name__ == "__main__":
