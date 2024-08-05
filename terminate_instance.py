@@ -24,8 +24,8 @@ def get_and_validate_env_vars():
     return instance_params, lambda_token
 
 
-def launch_instance(instance_params, lambda_token):
-    """Launch the instance and return the response."""
+def terminate_instance(instance_params, lambda_token):
+    """Terminate the instance and return the response."""
     url = "https://cloud.lambdalabs.com/api/v1/instance-operations/terminate"
     headers = {"Authorization": f"Bearer {lambda_token}"}
 
@@ -40,7 +40,7 @@ def launch_instance(instance_params, lambda_token):
 
 
 def handle_response(response):
-    """Handle the response from the instance launch."""
+    """Handle the response from the instance termination request."""
     if response.status_code != 200:
         error = response.json().get("error", {"message": "An unknown error occurred"})
         print(
@@ -100,7 +100,7 @@ def wait_for_terminate(instance_id, lambda_token):
 def main():
     """Launch a Lambda Labs cloud instance from environment settings."""
     instance_params, lambda_token = get_and_validate_env_vars()
-    response = launch_instance(instance_params, lambda_token)
+    response = terminate_instance(instance_params, lambda_token)
     instance_id = handle_response(response)
     if instance_id:
         wait_for_terminate(instance_id, lambda_token)
