@@ -1,0 +1,36 @@
+---
+name: "Terminate LambdaLabs Instance"
+description: "Terminates a Lambda Labs cloud instance using environment settings."
+inputs:
+  instance_id:
+    description: "The ID of the instance to terminate"
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - name: Copy requirements
+      run: cp ${{ github.action_path }}/requirements.txt .tmp-ifera-lambdalabs-launch-instance-action-requirements.txt
+      shell: bash
+
+    - name: Set up Python
+      id: setup-python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.12"
+        cache: "pip"
+        cache-dependency-path: .tmp-ifera-lambdalabs-launch-instance-action-requirements.txt
+
+    - name: Install dependencies
+      run: pip install -r ${{ github.action_path }}/requirements.txt
+      shell: bash
+
+    - name: Terminate Instance
+      id: terminate-instance
+      run: python ${{ github.action_path }}/terminate_instance.py
+      shell: bash
+      env:
+        INSTANCE_ID: ${{ inputs.instance_id }}
+
+    - name: Clean up
+      run: rm -f .tmp-ifera-lambdalabs-launch-instance-action-requirements.txt
+      shell: bash
