@@ -33,6 +33,7 @@ runs:
       shell: bash
       env:
         INSTANCE_ID: ${{ inputs.instance_id }}
+        LAMBDA_TOKEN: ${{ inputs.lambda_token }}
 
     - name: Clean up
       run: rm -f .tmp-ifera-lambdalabs-launch-instance-action-requirements.txt
