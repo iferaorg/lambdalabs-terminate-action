@@ -64,7 +64,7 @@ def wait_for_terminate(instance_id, lambda_token):
     print("Waiting for instance to terminate...")
 
     while True:
-        print('.', end='', flush=True)
+        print(".", end="", flush=True)
         response = requests.get(url, headers=headers, timeout=10)
         instance_status = response.json().get("data", {}).get("status")
         if instance_status != "terminating":
@@ -75,7 +75,9 @@ def wait_for_terminate(instance_id, lambda_token):
 
     # Status is now "terminated" or "unhealthy". Raise an error if unhealthy.
     if instance_status != "terminated":
-        raise ValueError(f"Instance status is {instance_status}, expected 'terminated'.")
+        raise ValueError(
+            f"Instance status is {instance_status}, expected 'terminated'."
+        )
 
     total_time = time.time() - start_time
     print(f"\nInstance terminated in {total_time:.2f} seconds.")
